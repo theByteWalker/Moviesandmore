@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieApiService {
-    @GET("search/movie")
-    fun getMoviesByTitle(@Query("query") movieTitle: String): Response<MovieApiResponse>
+    @GET("search/titles")
+    suspend fun getMoviesByTitle(@Query("query") movieTitle: String): Response<MovieApiResponse>
 }
