@@ -4,8 +4,11 @@ import com.example.moviesandmore.domain.movie.Movie
 import com.example.moviesandmore.domain.movie.MovieRepository
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(private val movieApiService: MovieApiService, private val movieMapper: MovieMapper) : MovieRepository {
-    override fun searchMovieByTitle(movieTitle: String): List<Movie>{
+class MovieRepositoryImpl @Inject constructor(
+    private val movieApiService: MovieApiService,
+    private val movieMapper: MovieMapper
+) : MovieRepository {
+    override suspend fun searchMovieByTitle(movieTitle: String): List<Movie> {
         if (movieTitle.isEmpty()) {
             throw IllegalArgumentException("Invalid input")
         }
