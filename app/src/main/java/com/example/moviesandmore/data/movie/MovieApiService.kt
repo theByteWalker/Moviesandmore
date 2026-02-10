@@ -1,0 +1,10 @@
+package com.example.moviesandmore.data.movie
+
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface MovieApiService {
+    @GET("search/movie")
+    fun getMoviesByTitle(@Query("query") movieTitle: String): Response<MovieApiResponse>
+}
