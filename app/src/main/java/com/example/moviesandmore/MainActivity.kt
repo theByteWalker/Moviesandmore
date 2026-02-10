@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviesandmore.ui.theme.MoviesAndMoreTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MoviesAndMoreTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    val viewModel: MyViewModel = hiltViewModel()
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
