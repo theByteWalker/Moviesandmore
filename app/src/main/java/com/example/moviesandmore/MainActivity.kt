@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.moviesandmore.presentation.movie.MovieSearchScreen
 import com.example.moviesandmore.ui.theme.MoviesAndMoreTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MoviesAndMoreTheme {
-
+                MovieSearchScreen()
             }
         }
     }
@@ -26,5 +27,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     MoviesAndMoreTheme {
+        MovieSearchScreen()
     }
 }
