@@ -1,8 +1,9 @@
 package com.example.moviesandmore.domain.movie
 
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -12,9 +13,9 @@ class SearchMovieUseCaseTest {
     val useCase = SearchMovieUseCase(mockRepository)
 
     @Test
-    fun shouldBeAbleToSearchForMovieByMovieTitle() {
+    fun shouldBeAbleToSearchForMovieByMovieTitle() = runTest {
         val expectedMovieList: List<Movie> = listOf(Movie("Avengers"), Movie("Avenger: Endgame"))
-        every { mockRepository.searchMovieByTitle("Avengers") } returns expectedMovieList
+        coEvery { mockRepository.searchMovieByTitle("Avengers") } returns expectedMovieList
 
         val result = useCase.execute("Avengers")
 
@@ -23,11 +24,13 @@ class SearchMovieUseCaseTest {
 
     @Test
     fun shouldReturnErrorIfInputStringISNotValid() {
-        val erroResponse = "Invalid input"
+        val errorResponse = "Invalid input"
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            useCase.execute("")
+            runTest {
+                useCase.execute("")
+            }
         }
-        assertEquals(erroResponse, exception.message)
+        assertEquals(errorResponse, exception.message)
     }
 }
