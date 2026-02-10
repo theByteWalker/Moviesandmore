@@ -1,5 +1,6 @@
 package com.example.moviesandmore.data.movie
 
+import com.example.moviesandmore.domain.movie.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +32,14 @@ class MovieModule {
     @Singleton
     fun provideMovieMapper(): MovieMapper {
         return MovieMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieRepository(
+        movieApiService: MovieApiService,
+        movieMapper: MovieMapper
+    ): MovieRepository {
+        return MovieRepositoryImpl(movieApiService, movieMapper)
     }
 }
