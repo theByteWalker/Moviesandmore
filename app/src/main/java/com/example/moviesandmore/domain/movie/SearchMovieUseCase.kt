@@ -1,10 +1,10 @@
 package com.example.moviesandmore.domain.movie
 
-class SearchMovieUseCase{
-    fun execute(movieTitle: String): Unit {
+class SearchMovieUseCase(private val movieRepository: MovieRepository){
+    fun execute(movieTitle: String): List<Movie> {
         if (movieTitle.isEmpty()) {
             throw IllegalArgumentException("Invalid input")
         }
-        return Unit
+        return movieRepository.searchMovieByTitle(movieTitle)
     }
 }
