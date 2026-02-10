@@ -1,8 +1,9 @@
 package com.example.moviesandmore.data.movie
 
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +23,7 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun givenAValidMovieTitle_whenSearchMovieByTitle_thenReturnMovieList() {
+    fun givenAValidMovieTitle_whenSearchMovieByTitle_thenReturnMovieList() = runTest {
         val movieDtos = listOf(
             MovieDto(primaryTitle = "Avengers"),
             MovieDto(primaryTitle = "Avenger: Endgame")
@@ -30,7 +31,7 @@ class MovieRepositoryImplTest {
         val apiResponse = MovieApiResponse(titles = movieDtos)
         val response = Response.success(apiResponse)
         
-        every { movieApiService.getMoviesByTitle("Avengers") } returns response
+        coEvery { movieApiService.getMoviesByTitle("Avengers") } returns response
 
         val result = movieRepository.searchMovieByTitle("Avengers")
 
@@ -44,18 +45,20 @@ class MovieRepositoryImplTest {
         val errorResponse = "Invalid input"
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            movieRepository.searchMovieByTitle("")
+            runTest {
+                movieRepository.searchMovieByTitle("")
+            }
         }
 
         assertEquals(errorResponse, exception.message)
     }
     
     @Test
-    fun givenNullTitlesInResponse_whenSearchMovieByTitle_thenReturnEmptyList() {
+    fun givenNullTitlesInResponse_whenSearchMovieByTitle_thenReturnEmptyList() = runTest {
         val apiResponse = MovieApiResponse(titles = null)
         val response = Response.success(apiResponse)
         
-        every { movieApiService.getMoviesByTitle("Unknown") } returns response
+        coEvery { movieApiService.getMoviesByTitle("Unknown") } returns response
 
         val result = movieRepository.searchMovieByTitle("Unknown")
 
