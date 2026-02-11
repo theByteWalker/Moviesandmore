@@ -1,5 +1,9 @@
-package com.example.moviesandmore
+package com.example.moviesandmore.app
 
+import com.example.moviesandmore.data.MovieApiService
+import com.example.moviesandmore.data.MovieRepositoryImpl
+import com.example.moviesandmore.domain.MovieRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +48,13 @@ object NetworkModule {
     @Singleton
     fun provideMovieApiService(retrofit: Retrofit): MovieApiService {
         return retrofit.create(MovieApiService::class.java)
+    }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class RepositoryModule {
+        @Binds
+        @Singleton
+        abstract fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
     }
 }

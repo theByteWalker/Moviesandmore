@@ -1,5 +1,7 @@
 package com.example.moviesandmore
 
+import com.example.moviesandmore.app.NetworkModule
+import com.example.moviesandmore.data.MovieApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

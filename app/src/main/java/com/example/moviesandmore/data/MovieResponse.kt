@@ -1,4 +1,4 @@
-package com.example.moviesandmore
+package com.example.moviesandmore.data
 
 data class MovieResponse(
     val titles: List<MovieTitle>,

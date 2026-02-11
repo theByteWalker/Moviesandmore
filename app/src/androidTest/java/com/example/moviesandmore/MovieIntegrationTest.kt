@@ -1,5 +1,6 @@
 package com.example.moviesandmore
 
+import com.example.moviesandmore.data.MovieApiService
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
