@@ -17,4 +17,9 @@ class MovieRepositoryImpl @Inject constructor(
         val movieDtos = movieApiResponse?.titles ?: emptyList()
         return movieMapper.toDomainList(movieDtos)
     }
+
+    override fun saveMovie(movie: Movie): Movie {
+        //TODO("Not yet implemented")
+        return movie
+    }
 }
