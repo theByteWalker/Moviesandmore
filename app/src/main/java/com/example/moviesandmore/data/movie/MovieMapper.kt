@@ -5,7 +5,8 @@ import com.example.moviesandmore.domain.movie.Movie
 class MovieMapper {
     fun toDomain(dto: MovieDto): Movie {
         return Movie(
-            name = dto.primaryTitle
+            name = dto.primaryTitle,
+            imageUrl = dto.primaryImage?.url
         )
     }
 
