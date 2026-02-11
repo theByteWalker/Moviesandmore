@@ -14,7 +14,7 @@ class SearchMovieUseCaseTest {
 
     @Test
     fun shouldBeAbleToSearchForMovieByMovieTitle() = runTest {
-        val expectedMovieList: List<Movie> = listOf(Movie("Avengers"), Movie("Avenger: Endgame"))
+        val expectedMovieList: List<Movie> = listOf(Movie("Avengers", null), Movie("Avenger: Endgame", null))
         coEvery { mockRepository.searchMovieByTitle("Avengers") } returns expectedMovieList
 
         val result = useCase.execute("Avengers")
