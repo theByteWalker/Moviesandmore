@@ -71,4 +71,7 @@ dependencies {
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
