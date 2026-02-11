@@ -10,4 +10,11 @@ data class MovieApiResponse(
 data class MovieDto(
     @SerializedName("primaryTitle")
     val primaryTitle: String,
+    @SerializedName("primaryImage")
+    val primaryImage: PrimaryImage?
+)
+
+data class PrimaryImage(
+    @SerializedName("url")
+    val url: String?
 )
