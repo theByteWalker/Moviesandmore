@@ -25,8 +25,8 @@ class MovieRepositoryImplTest {
     @Test
     fun givenAValidMovieTitle_whenSearchMovieByTitle_thenReturnMovieList() = runTest {
         val movieDtos = listOf(
-            MovieDto(primaryTitle = "Avengers"),
-            MovieDto(primaryTitle = "Avenger: Endgame")
+            MovieDto(primaryTitle = "Avengers", primaryImage = null),
+            MovieDto(primaryTitle = "Avenger: Endgame", primaryImage = null)
         )
         val apiResponse = MovieApiResponse(titles = movieDtos)
         val response = Response.success(apiResponse)
