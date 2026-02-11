@@ -11,9 +11,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import com.example.moviesandmore.domain.movie.Movie
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -215,9 +218,24 @@ fun MovieItem(movie: Movie) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Box(
+                modifier = Modifier
+                    .size(width = 80.dp, height = 120.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            ) {
+                AsyncImage(
+                    model = movie.imageUrl,
+                    contentDescription = "${movie.name} poster",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            
+            Spacer(modifier = Modifier.width(12.dp))
+            
             Text(
                 text = movie.name,
                 style = MaterialTheme.typography.bodyLarge,
