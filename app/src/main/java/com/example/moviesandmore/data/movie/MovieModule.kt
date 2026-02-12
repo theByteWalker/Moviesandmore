@@ -63,4 +63,10 @@ class MovieModule {
     fun provideGetMovieByIdUseCase(movieRepository: MovieRepository): GetMovieByIdUseCase {
         return GetMovieByIdUseCase(movieRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideSearchMovieUseCase(movieRepository: MovieRepository): com.example.moviesandmore.domain.movie.SearchMovieUseCase {
+        return com.example.moviesandmore.domain.movie.SearchMovieUseCase(movieRepository)
+    }
 }
