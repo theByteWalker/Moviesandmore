@@ -46,27 +46,4 @@ class MovieModule {
     ): MovieRepository {
         return MovieRepositoryImpl(movieApiService, movieMapper, movieDao)
     }
-    @Provides
-    @Singleton
-    fun provideSaveMovieUseCase(movieRepository: MovieRepository): SaveMovieUseCase {
-        return SaveMovieUseCase(movieRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetSavedMoviesUseCase(movieRepository: MovieRepository): GetSavedMoviesUseCase {
-        return GetSavedMoviesUseCase(movieRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetMovieByIdUseCase(movieRepository: MovieRepository): GetMovieByIdUseCase {
-        return GetMovieByIdUseCase(movieRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSearchMovieUseCase(movieRepository: MovieRepository): com.example.moviesandmore.domain.movie.SearchMovieUseCase {
-        return com.example.moviesandmore.domain.movie.SearchMovieUseCase(movieRepository)
-    }
 }
