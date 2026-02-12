@@ -3,6 +3,7 @@ package com.example.moviesandmore.presentation.movie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesandmore.domain.movie.Movie
+import com.example.moviesandmore.domain.movie.SaveMovieUseCase
 import com.example.moviesandmore.domain.movie.SearchMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(
-    private val searchMovieUseCase: SearchMovieUseCase
+    private val searchMovieUseCase: SearchMovieUseCase,
+    private val saveMovieUseCase: SaveMovieUseCase
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
@@ -43,6 +45,16 @@ class MovieViewModel @Inject constructor(
 
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
+    }
+
+    fun saveMovie(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                saveMovieUseCase.execute(movie)
+            } catch (e: Exception) {
+                android.util.Log.e("MovieViewModel", "Error saving movie", e)
+            }
+        }
     }
 
     private suspend fun searchMovieByTitle(movieTitle: String) {
