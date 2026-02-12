@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviesandmore.data.MovieTitle
 import com.example.moviesandmore.domain.GetAllTitlesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class MyViewModel @Inject constructor(
     }
 
     private fun fetchMovies() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = getAllTitlesUseCase()
                 _movieTitlesState.value = response.titles
