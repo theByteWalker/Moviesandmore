@@ -1,4 +1,4 @@
-package com.example.moviesandmore.app
+package com.example.moviesandmore.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,9 +1,10 @@
-package com.example.moviesandmore.app
+package com.example.moviesandmore.di
 
 import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.moviesandmore.data.local.AppDatabase
 import com.example.moviesandmore.data.movie.MovieDao
 import dagger.Module
 import dagger.Provides
