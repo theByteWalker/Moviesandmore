@@ -8,6 +8,8 @@ data class MovieApiResponse(
 )
 
 data class MovieDto(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("primaryTitle")
     val primaryTitle: String,
     @SerializedName("primaryImage")
@@ -18,3 +20,13 @@ data class PrimaryImage(
     @SerializedName("url")
     val url: String?
 )
+
+data class MovieDetailDto(
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("primaryTitle")
+    val primaryTitle: String,
+    @SerializedName("primaryImage")
+    val primaryImage: PrimaryImage?
+)
+
