@@ -6,7 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
 data class MovieEntity(
-    @PrimaryKey val id: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    @ColumnInfo(name = "title_id") val titleId: String,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "poster_url") val posterUrl: String
+    @ColumnInfo(name = "poster_url") val posterUrl: String?,
+    @ColumnInfo(name = "is_favorite") var isFavorite: Boolean = false
 )
