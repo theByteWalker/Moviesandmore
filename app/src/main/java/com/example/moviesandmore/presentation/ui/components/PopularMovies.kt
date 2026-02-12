@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.moviesandmore.presentation.MyViewModel
+import com.example.moviesandmore.presentation.PopularMoviesViewModel
 
 @Composable
-fun PopularMovies(innerPaddingValues: PaddingValues, viewModel: MyViewModel = hiltViewModel()) {
+fun PopularMovies(innerPaddingValues: PaddingValues, onClick: (String) -> Unit, viewModel: PopularMoviesViewModel = hiltViewModel()) {
     val movies = viewModel.uiState.value
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -24,7 +24,7 @@ fun PopularMovies(innerPaddingValues: PaddingValues, viewModel: MyViewModel = hi
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(movies) { movie ->
-            MovieCard(movie)
+            MovieCard(movie, onClick)
         }
     }
 }

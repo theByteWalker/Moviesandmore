@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyViewModel @Inject constructor(
+class PopularMoviesViewModel @Inject constructor(
     private val getAllTitlesUseCase: GetAllTitlesUseCase,
 ) : ViewModel() {
     private val _movieTitlesState = mutableStateOf<List<MovieTitle>>(emptyList())

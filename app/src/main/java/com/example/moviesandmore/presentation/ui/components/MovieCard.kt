@@ -1,5 +1,6 @@
 package com.example.moviesandmore.presentation.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,7 +20,7 @@ import coil3.compose.AsyncImage
 import com.example.moviesandmore.data.MovieTitle
 
 @Composable
-fun MovieCard(movie: MovieTitle) {
+fun MovieCard(movie: MovieTitle, onClick: (String) -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp)
@@ -28,6 +29,7 @@ fun MovieCard(movie: MovieTitle) {
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth()
+                .clickable { onClick(movie.id) }
         ) {
             AsyncImage(
                 model = movie.primaryImage.url,
