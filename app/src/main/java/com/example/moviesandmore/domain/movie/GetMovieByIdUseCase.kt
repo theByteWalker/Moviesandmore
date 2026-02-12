@@ -1,6 +1,8 @@
 package com.example.moviesandmore.domain.movie
 
-class GetMovieByIdUseCase(private val movieRepository: MovieRepository) {
+import javax.inject.Inject
+
+class GetMovieByIdUseCase @Inject constructor(private val movieRepository: MovieRepository) {
     suspend fun execute(movieId: String): Movie {
         return movieRepository.getMovieById(movieId)
     }
