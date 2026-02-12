@@ -70,8 +70,8 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.Favorites.route) {
                             FavoritesScreen(
-                                onCardClick = {
-                                    navController.navigate(Screen.MovieDetail.route)
+                                onCardClick = { movieId ->
+                                    navController.navigate(Screen.MovieDetail.createRoute(movieId))
                                 }
                             )
                         }

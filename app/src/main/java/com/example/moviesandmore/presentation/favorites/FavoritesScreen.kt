@@ -47,7 +47,7 @@ import com.example.moviesandmore.data.movie.MovieEntity
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
     viewModel: FavoritesViewModel = hiltViewModel(),
-    onCardClick: () -> Unit
+    onCardClick: (String) -> Unit
 ) {
     val favorites by viewModel.favorites.collectAsState()
 
@@ -80,7 +80,7 @@ fun FavoritesScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(favorites) { movie ->
-                    FavouriteMovieItem(movie = movie, onCardClick = onCardClick)
+                    FavouriteMovieItem(movie = movie, onCardClick = { onCardClick(movie.titleId) })
                 }
             }
         }
