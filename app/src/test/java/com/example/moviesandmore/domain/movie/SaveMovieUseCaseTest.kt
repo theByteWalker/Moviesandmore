@@ -1,8 +1,10 @@
 package com.example.moviesandmore.domain.movie
 
-import io.mockk.every
+import com.example.moviesandmore.data.movie.MovieEntity
+import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -12,22 +14,23 @@ class SaveMovieUseCaseTest {
     val useCase = SaveMovieUseCase(mockRepository)
 
     @Test
-    fun shouldBeAbleToSaveAValidMovie() {
-        val movie = Movie("Avengers", null)
-        every { mockRepository.saveMovie(movie) } returns movie
+    fun shouldBeAbleToSaveAValidMovie() = runTest {
+        val movie = Movie("tt27497448", "Avengers", null)
+        val movieEntiy = MovieEntity(1, "tt27497448", "Avengers", null)
+        coEvery { mockRepository.saveMovie(movie) } returns movieEntiy
 
         val result = useCase.execute(movie)
 
-        assertEquals(movie, result)
+        assertEquals(movieEntiy, result)
     }
 
     @Test
     fun shouldReturnFalseIfMovieIsInvalid() {
-        val movie = Movie("", null)
+        val movie = Movie("tt27497448", "", null)
         val errorResponse = "Invalid Movie, Cannot Save"
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            useCase.execute(movie)
+            runTest { useCase.execute(movie) }
         }
 
         assertEquals(errorResponse, exception.message)
