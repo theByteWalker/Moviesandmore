@@ -1,6 +1,9 @@
 package com.example.moviesandmore.data.movie
 
+import com.example.moviesandmore.domain.movie.GetMovieByIdUseCase
+import com.example.moviesandmore.domain.movie.GetSavedMoviesUseCase
 import com.example.moviesandmore.domain.movie.MovieRepository
+import com.example.moviesandmore.domain.movie.SaveMovieUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,8 +41,26 @@ class MovieModule {
     @Singleton
     fun provideMovieRepository(
         movieApiService: MovieApiService,
-        movieMapper: MovieMapper
+        movieMapper: MovieMapper,
+        movieDao: MovieDao
     ): MovieRepository {
-        return MovieRepositoryImpl(movieApiService, movieMapper)
+        return MovieRepositoryImpl(movieApiService, movieMapper, movieDao)
+    }
+    @Provides
+    @Singleton
+    fun provideSaveMovieUseCase(movieRepository: MovieRepository): SaveMovieUseCase {
+        return SaveMovieUseCase(movieRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSavedMoviesUseCase(movieRepository: MovieRepository): GetSavedMoviesUseCase {
+        return GetSavedMoviesUseCase(movieRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMovieByIdUseCase(movieRepository: MovieRepository): GetMovieByIdUseCase {
+        return GetMovieByIdUseCase(movieRepository)
     }
 }
