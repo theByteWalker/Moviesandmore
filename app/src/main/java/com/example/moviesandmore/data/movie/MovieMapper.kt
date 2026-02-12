@@ -19,7 +19,8 @@ class MovieMapper {
         return MovieEntity(
             titleId = movie.titleId,
             name = movie.name,
-            posterUrl = movie.imageUrl ?: ""
+            posterUrl = movie.imageUrl ?: "",
+            isFavorite = true
         )
     }
 
