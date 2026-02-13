@@ -37,13 +37,14 @@ import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
 import com.example.moviesandmore.presentation.ui.components.PopularMovies
 import com.example.moviesandmore.presentation.ui.components.SearchMovies
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
         val sharedPref = getSharedPreferences("movie_prefs", Context.MODE_PRIVATE)
         val username = sharedPref.getString("username", null)
         val startDest = if (username == "dummy_username") Routes.POPULAR else Routes.LOGIN
