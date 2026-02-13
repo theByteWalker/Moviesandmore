@@ -45,6 +45,12 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
     }
+
+    sourceSets {
+        getByName("androidTest") {
+            java.srcDirs("src/androidTest/java")
+        }
+    }
 }
 
 dependencies {
@@ -57,7 +63,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.runner)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.test.core.ktx)
+    androidTestImplementation(libs.androidx.test.rules)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,4 +100,5 @@ dependencies {
 
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
+    kspAndroidTest(libs.androidx.room.compiler)
 }
