@@ -1,9 +1,6 @@
 package com.example.moviesandmore.data.movie
 
-import com.example.moviesandmore.domain.movie.GetMovieByIdUseCase
-import com.example.moviesandmore.domain.movie.GetSavedMoviesUseCase
 import com.example.moviesandmore.domain.movie.MovieRepository
-import com.example.moviesandmore.domain.movie.SaveMovieUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
