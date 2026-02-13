@@ -3,6 +3,7 @@ package com.example.moviesandmore.domain
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.moviesandmore.data.MovieResponse
 import com.example.moviesandmore.data.MovieTitle
+import com.example.moviesandmore.data.PrimaryImage
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +30,7 @@ class GetAllTitlesUseCaseTest {
     @Test
     fun getMoviesDataFromRepository() = runBlocking {
         val mockMovies = listOf(
-            MovieTitle(id = "1", primaryTitle = "Inception", originalTitle = "Inception", plot = "Dreams", startYear = 2010, rating = null)
+            MovieTitle(id = "1", primaryTitle = "Inception", originalTitle = "Inception", plot = "Dreams", startYear = 2010, rating = null, primaryImage = PrimaryImage("", 0, 0))
         )
         val mockResponse = MovieResponse(titles = mockMovies, totalCount = 1, nextPageToken = null)
 
