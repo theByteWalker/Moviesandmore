@@ -9,4 +9,5 @@ object Routes {
     fun navigateToMovieDetailsById(titleId: String): String {
         return "details/$titleId"
     }
+    const val LOGIN = "login"
 }

@@ -1,5 +1,6 @@
 package com.example.moviesandmore.presentation
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,7 +25,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +33,7 @@ import com.example.moviesandmore.ui.theme.MoviesAndMoreTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.composable
 import com.example.moviesandmore.presentation.ui.components.FavouritesMovies
+import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
 import com.example.moviesandmore.presentation.ui.components.PopularMovies
 import com.example.moviesandmore.presentation.ui.components.SearchMovies
@@ -41,7 +42,11 @@ import com.example.moviesandmore.presentation.ui.components.SearchMovies
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        val sharedPref = getSharedPreferences("movie_prefs", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", null)
+        val startDest = if (username == "dummy_username") Routes.POPULAR else Routes.LOGIN
         enableEdgeToEdge()
         setContent {
             MoviesAndMoreTheme {
@@ -50,66 +55,58 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = navBackStackEntry?.destination?.route
                 val startDestination = Destination.POPULAR
                 var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+                val isLoginScreen = currentRoute == Routes.LOGIN
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        CenterAlignedTopAppBar(
-                            title = {
-                                val title = Destination.entries.find { it.route == currentRoute }?.title ?: ""
-                                Column() {
-                                    Text(text = title)
-                                }
-                            },
-                            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            ),
-                            navigationIcon = {
-                                if (navController.previousBackStackEntry != null) {
-                                    IconButton(onClick = {
-                                        navController.popBackStack()
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Back"
-                                        )
+                        if (!isLoginScreen) {
+                            CenterAlignedTopAppBar(
+                                title = {
+                                    val title = Destination.entries.find { it.route == currentRoute }?.title ?: ""
+                                    Column() {
+                                        Text(text = title)
                                     }
-                                }
-                            },
-//                            actions = {
-//                                if (currentRoute == Routes.MOVIE_DETAILS) {
-//                                    IconButton(onClick = {
-//
-//                                    }) {
-//                                        Icon(
-//                                            imageVector = Icons.Default.Star,
-//                                            contentDescription = "Favourite"
-//                                        )
-//                                    }
-//                                }
-//                            }
-                        )
+                                },
+                                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                ),
+                                navigationIcon = {
+                                    if (navController.previousBackStackEntry != null) {
+                                        IconButton(onClick = {
+                                            navController.popBackStack()
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                                contentDescription = "Back"
+                                            )
+                                        }
+                                    }
+                                },
+                            )
+                        }
                     },
                     bottomBar = {
-                        NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                            Destination.entries.forEachIndexed { index, destination ->
-                                NavigationBarItem(
-                                    selected = selectedDestination == index,
-                                    onClick = {
-                                        navController.navigate(route = destination.route)
-                                        selectedDestination = index
-                                    },
-                                    icon = {
-                                        Icon(
-                                            destination.icon,
-                                            contentDescription = destination.title
-                                        )
-                                    },
-                                    label = { Text(destination.label) }
-                                )
+                        if (!isLoginScreen) {
+                            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                                Destination.entries.forEachIndexed { index, destination ->
+                                    NavigationBarItem(
+                                        selected = selectedDestination == index,
+                                        onClick = {
+                                            navController.navigate(route = destination.route)
+                                            selectedDestination = index
+                                        },
+                                        icon = {
+                                            Icon(
+                                                destination.icon,
+                                                contentDescription = destination.title
+                                            )
+                                        },
+                                        label = { Text(destination.label) }
+                                    )
+                                }
                             }
                         }
                     }) { innerPadding ->
-
-                        NavHost(navController, startDestination = Routes.POPULAR) {
+                        NavHost(navController, startDestination = startDest) {
                             composable(route = Routes.POPULAR) {
                                 PopularMovies(innerPadding, {
                                     titleId -> navController.navigate(Routes.navigateToMovieDetailsById(titleId))
@@ -124,6 +121,9 @@ class MainActivity : ComponentActivity() {
                             composable(route = Routes.MOVIE_DETAILS) { backStackEntry ->
                                 val titleId = backStackEntry.arguments?.getString(Routes.TITLE_ID) ?: "0"
                                 MovieDetails(titleId)
+                            }
+                            composable(Routes.LOGIN) {
+                                Login(innerPadding, navController)
                             }
                         }
                 }
