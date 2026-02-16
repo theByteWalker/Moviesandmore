@@ -2,9 +2,9 @@ package com.example.moviesandmore.presentation
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -41,6 +41,7 @@ import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
 import com.example.moviesandmore.presentation.ui.components.PopularMovies
 import com.example.moviesandmore.presentation.ui.components.SearchMovies
+import com.google.firebase.messaging.FirebaseMessaging
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,16 +49,19 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashScreen = installSplashScreen()
-        val sharedPref = getSharedPreferences("movie_prefs", Context.MODE_PRIVATE)
+        installSplashScreen()
+        val sharedPref = getSharedPreferences("movie_prefs", MODE_PRIVATE)
         val username = sharedPref.getString("username", null)
         val startDest = if (username == "dummy_username") Routes.POPULAR else Routes.LOGIN
         enableEdgeToEdge()
-        val channel = NotificationChannel(
+        NotificationChannel(
             "LOGIN_CHANNEL",
             "Login Channel",
             NotificationManager.IMPORTANCE_DEFAULT
         )
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            Log.d("FCM_TOKEN", task.result ?: "Failed")
+        }
         setContent {
             MoviesAndMoreTheme {
                 val navController = rememberNavController()

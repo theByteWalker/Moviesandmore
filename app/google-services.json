@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166383287556",
+    "project_id": "moviesandmore-26919",
+    "storage_bucket": "moviesandmore-26919.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166383287556:android:a2174bff64f75b297b2451",
+        "android_client_info": {
+          "package_name": "com.example.moviesandmore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARKaX7q6gyDSg9x8R71aEFhhPlyKAh5XE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
