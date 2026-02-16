@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".ui.theme.MoviesApplication"
@@ -34,6 +35,19 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.MoviesAndMore" />
+
+        <service
+            android:name=".app.MoviesFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="favourite_movie_added_local_notification" />
+
     </application>
 
 </manifest>

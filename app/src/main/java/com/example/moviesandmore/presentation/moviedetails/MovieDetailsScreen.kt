@@ -21,6 +21,7 @@ fun MovieDetails(
     viewModel: MovieDetailsViewModel = hiltViewModel()
 ) {
     val movie by viewModel.movie.collectAsState()
+    val sampleVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -88,6 +89,32 @@ fun MovieDetails(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Sample Video",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                        ) {
+                            VideoPlayer(
+                                videoUrl = sampleVideoUrl,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
         }

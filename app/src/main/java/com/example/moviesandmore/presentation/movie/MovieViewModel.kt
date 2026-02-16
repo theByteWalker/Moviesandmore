@@ -2,10 +2,12 @@ package com.example.moviesandmore.presentation.movie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviesandmore.app.FavouritesNotificationService
 import com.example.moviesandmore.domain.movie.Movie
 import com.example.moviesandmore.domain.movie.SaveMovieUseCase
 import com.example.moviesandmore.domain.movie.SearchMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,9 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(
     private val searchMovieUseCase: SearchMovieUseCase,
-    private val saveMovieUseCase: SaveMovieUseCase
+    private val saveMovieUseCase: SaveMovieUseCase,
+    private val favouritesNotificationService: FavouritesNotificationService
 ) : ViewModel() {
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -51,6 +53,7 @@ class MovieViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveMovieUseCase.execute(movie)
+                favouritesNotificationService.showMovieAddedNotification(movie.name)
             } catch (e: Exception) {
                 android.util.Log.e("MovieViewModel", "Error saving movie", e)
             }
