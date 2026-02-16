@@ -1,5 +1,6 @@
 package com.example.moviesandmore.presentation.ui.components
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,10 +29,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.navigation.NavController
 import com.example.moviesandmore.R
 import com.example.moviesandmore.presentation.Routes
-import androidx.core.content.edit
 
 @Composable
 fun Login(padding: PaddingValues, navController: NavController) {
@@ -40,6 +44,24 @@ fun Login(padding: PaddingValues, navController: NavController) {
     var password by remember { mutableStateOf("") }
     var selectedRole by remember { mutableStateOf("User") }
     val isLoginEnabled = username.isNotBlank() && password.isNotBlank()
+    fun triggerNotification(context: Context) {
+        val builder = NotificationCompat.Builder(context, "LOGIN_CHANNEL")
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle("Login Successful")
+            .setContentText("Welcome to the Movies App!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            NotificationManagerCompat.from(context).notify(1, builder.build())
+        } else {
+            Log.e("NotificationError", "User has not granted POST_NOTIFICATIONS permission")
+        }
+    }
 
     Column(
         modifier = Modifier.padding(padding).fillMaxSize(),
@@ -95,6 +117,7 @@ fun Login(padding: PaddingValues, navController: NavController) {
                 val sharedPref = context.getSharedPreferences("movie_prefs", Context.MODE_PRIVATE)
                 sharedPref.edit { putString("username", "dummy_username") }
                 sharedPref.edit { putString("password", "password") }
+                triggerNotification(context)
                 navController.navigate(Routes.POPULAR) {
                     popUpTo("login") { inclusive = true }
                 }

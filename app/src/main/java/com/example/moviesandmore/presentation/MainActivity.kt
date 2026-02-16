@@ -1,10 +1,14 @@
 package com.example.moviesandmore.presentation
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -37,10 +41,10 @@ import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
 import com.example.moviesandmore.presentation.ui.components.PopularMovies
 import com.example.moviesandmore.presentation.ui.components.SearchMovies
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,11 @@ class MainActivity : ComponentActivity() {
         val username = sharedPref.getString("username", null)
         val startDest = if (username == "dummy_username") Routes.POPULAR else Routes.LOGIN
         enableEdgeToEdge()
+        val channel = NotificationChannel(
+            "LOGIN_CHANNEL",
+            "Login Channel",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
         setContent {
             MoviesAndMoreTheme {
                 val navController = rememberNavController()
