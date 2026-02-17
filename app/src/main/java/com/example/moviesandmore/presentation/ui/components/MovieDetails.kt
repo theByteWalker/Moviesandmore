@@ -47,8 +47,8 @@ import com.example.moviesandmore.presentation.MovieDetailsViewModel
 fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewModel()) {
     val state = viewModel.uiState
     val sampleVideoUrl = "https://html5demos.com/assets/dizzy.mp4"
-    val sampleVideom3u8 = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
-    val sampleVideodash = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
+    val sampleVideoHLS = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    val sampleVideoDash = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
     var isFullScreen by remember { mutableStateOf(false) }
     LaunchedEffect(titleId) {
 //        viewModel.fetchMovieDetails(titleId)
@@ -65,7 +65,7 @@ fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewMod
     } else {
         if (isFullScreen) {
             VideoPlayer(
-                url = sampleVideoUrl,
+                url = sampleVideoHLS,
                 modifier = Modifier.fillMaxSize(),
                 onFullScreenToggle = { fullScreen ->
                     isFullScreen = fullScreen
@@ -161,7 +161,7 @@ fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewMod
                 Spacer(modifier = Modifier.height(8.dp))
 
                 VideoPlayer(
-                    url = sampleVideoUrl,
+                    url = sampleVideoHLS,
                     onFullScreenToggle = { fullScreen ->
                         isFullScreen = fullScreen
                     },
