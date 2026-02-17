@@ -9,6 +9,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
@@ -16,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +29,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -37,6 +44,7 @@ fun VideoPlayer(
     val activity = context as? Activity
 
     var isFullscreen by remember { mutableStateOf(false) }
+    var isBuffering by remember { mutableStateOf(false) }
     val positionManager = remember { VideoPositionManager(context) }
 
     val exoPlayer = remember {
@@ -48,6 +56,12 @@ fun VideoPlayer(
             if (savedPosition > 0) {
                 seekTo(savedPosition)
             }
+            
+            addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    isBuffering = playbackState == Player.STATE_BUFFERING
+                }
+            })
         }
     }
 
@@ -78,20 +92,31 @@ fun VideoPlayer(
     }
 
     if (!isFullscreen) {
-        AndroidView(
-            factory = {
-                PlayerView(context).apply {
-                    player = exoPlayer
-                    useController = true
-                    setFullscreenButtonClickListener { enterFullscreen ->
-                        isFullscreen = enterFullscreen
-                    }
-                }
-            },
+        Box(
             modifier = modifier
                 .fillMaxWidth()
                 .aspectRatio(16 / 9f)
-        )
+        ) {
+            AndroidView(
+                factory = {
+                    PlayerView(context).apply {
+                        player = exoPlayer
+                        useController = true
+                        setFullscreenButtonClickListener { enterFullscreen ->
+                            isFullscreen = enterFullscreen
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+            
+            if (isBuffering) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White
+                )
+            }
+        }
     }
 
     if (isFullscreen) {
@@ -123,6 +148,13 @@ fun VideoPlayer(
                     },
                     modifier = Modifier.fillMaxSize()
                 )
+                
+                if (isBuffering) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = Color.White
+                    )
+                }
             }
         }
     }
