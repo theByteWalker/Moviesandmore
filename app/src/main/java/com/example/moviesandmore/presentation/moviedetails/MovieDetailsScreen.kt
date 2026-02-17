@@ -21,7 +21,9 @@ fun MovieDetails(
     viewModel: MovieDetailsViewModel = hiltViewModel()
 ) {
     val movie by viewModel.movie.collectAsState()
-    val sampleVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"
+    val mp4Url = "https://www.w3schools.com/html/mov_bbb.mp4"
+    val hlsUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    val dashUrl = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -94,7 +96,7 @@ fun MovieDetails(
 
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "Sample Video",
+                            text = "Sample Video: mp4Url",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -109,7 +111,55 @@ fun MovieDetails(
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
                         ) {
                             VideoPlayer(
-                                videoUrl = sampleVideoUrl,
+                                videoUrl = mp4Url,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Sample Video: hlsUrl",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                        ) {
+                            VideoPlayer(
+                                videoUrl = hlsUrl,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Sample Video: dashUrl",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                        ) {
+                            VideoPlayer(
+                                videoUrl = dashUrl,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
