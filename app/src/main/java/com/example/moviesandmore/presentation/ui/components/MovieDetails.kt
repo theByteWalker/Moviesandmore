@@ -1,5 +1,6 @@
 package com.example.moviesandmore.presentation.ui.components
 
+import VideoPlayer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,9 @@ import com.example.moviesandmore.presentation.MovieDetailsViewModel
 @Composable
 fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewModel()) {
     val state = viewModel.uiState
+    val sampleVideoUrl = "https://html5demos.com/assets/dizzy.mp4"
+    val sampleVideom3u8 = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+    val sampleVideodash = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
     LaunchedEffect(titleId) {
 //        viewModel.fetchMovieDetails(titleId)
         viewModel.handleIntent(MovieDetailIntent.LoadMovie(titleId))
@@ -130,6 +134,25 @@ fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewMod
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = "${state.movie?.runtimeSeconds?.div(60)} min", style = MaterialTheme.typography.bodyMedium)
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Trailer",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            VideoPlayer(
+                url = sampleVideoUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f)
+                    .clip(RoundedCornerShape(12.dp))
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
