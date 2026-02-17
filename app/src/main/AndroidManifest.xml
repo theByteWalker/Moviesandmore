@@ -29,12 +29,14 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MoviesAndMore" />
+            android:theme="@style/Theme.MoviesAndMore"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MoviesAndMore" />
+            android:theme="@style/Theme.MoviesAndMore"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
 
         <service
             android:name=".app.MoviesFirebaseMessagingService"
