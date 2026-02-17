@@ -37,11 +37,17 @@ fun VideoPlayer(
     val activity = context as? Activity
 
     var isFullscreen by remember { mutableStateOf(false) }
+    val positionManager = remember { VideoPositionManager(context) }
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(videoUrl))
             prepare()
+            
+            val savedPosition = positionManager.getPosition(videoUrl)
+            if (savedPosition > 0) {
+                seekTo(savedPosition)
+            }
         }
     }
 
@@ -55,8 +61,13 @@ fun VideoPlayer(
         }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(videoUrl) {
         onDispose {
+            val currentPosition = exoPlayer.currentPosition
+            if (currentPosition > 0) {
+                positionManager.savePosition(videoUrl, currentPosition)
+            }
+            
             exoPlayer.release()
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
