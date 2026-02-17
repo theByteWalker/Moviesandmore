@@ -3,10 +3,17 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeOff
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +43,7 @@ fun VideoPlayer(url: String, modifier: Modifier = Modifier, onFullScreenToggle: 
     val videoKey = "timestamp_$url"
 
     var isBuffering by remember { mutableStateOf(true) }
+    var isMuted by remember { mutableStateOf(true) }
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(url))
@@ -49,6 +57,10 @@ fun VideoPlayer(url: String, modifier: Modifier = Modifier, onFullScreenToggle: 
             playWhenReady = true
             prepare()
         }
+    }
+
+    LaunchedEffect(isMuted) {
+        exoPlayer.volume = if (isMuted) 0f else 1f
     }
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
@@ -77,6 +89,21 @@ fun VideoPlayer(url: String, modifier: Modifier = Modifier, onFullScreenToggle: 
                 view.useController = !isBuffering
             }
         )
+
+        IconButton(
+            onClick = { isMuted = !isMuted },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 4.dp, end = 4.dp)
+        ) {
+            Icon(
+                imageVector = if (isMuted) Icons.AutoMirrored.Filled.VolumeOff else Icons.AutoMirrored.Filled.VolumeUp,
+                contentDescription = "Mute Toggle",
+                tint = Color.White,
+                modifier = Modifier.size(32.dp)
+            )
+        }
+
         if (isBuffering) {
             CircularProgressIndicator(
                 color = Color.White,
