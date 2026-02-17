@@ -2,6 +2,7 @@ package com.example.moviesandmore.presentation
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -70,9 +72,11 @@ class MainActivity : ComponentActivity() {
                 val startDestination = Destination.POPULAR
                 var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
                 val isLoginScreen = currentRoute == Routes.LOGIN
+                val configuration = LocalConfiguration.current
+                val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        if (!isLoginScreen) {
+                        if (!isLoginScreen && !isLandscape) {
                             CenterAlignedTopAppBar(
                                 title = {
                                     val title = Destination.entries.find { it.route == currentRoute }?.title ?: ""
@@ -99,7 +103,7 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     bottomBar = {
-                        if (!isLoginScreen) {
+                        if (!isLoginScreen && !isLandscape) {
                             NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
                                 Destination.entries.forEachIndexed { index, destination ->
                                     NavigationBarItem(
