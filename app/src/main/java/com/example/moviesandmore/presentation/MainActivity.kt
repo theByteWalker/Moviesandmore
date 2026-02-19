@@ -32,12 +32,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.moviesandmore.ui.theme.MoviesAndMoreTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.composable
+import com.example.moviesandmore.presentation.ui.components.AlbumScreen
 import com.example.moviesandmore.presentation.ui.components.FavouritesMovies
 import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
@@ -47,7 +49,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.P)
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +144,12 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Routes.LOGIN) {
                                 Login(innerPadding, navController)
+                            }
+                            composable(route = Routes.ALBUM) {
+                                AlbumScreen(
+                                    innerPadding,
+                                    viewModel = viewModel()
+                                )
                             }
                         }
                 }

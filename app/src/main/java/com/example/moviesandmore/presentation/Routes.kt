@@ -10,4 +10,5 @@ object Routes {
         return "details/$titleId"
     }
     const val LOGIN = "login"
+    const val ALBUM = "album"
 }

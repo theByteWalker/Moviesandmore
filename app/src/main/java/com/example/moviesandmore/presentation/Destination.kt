@@ -2,6 +2,7 @@ package com.example.moviesandmore.presentation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -14,5 +15,6 @@ enum class Destination(
 ) {
     POPULAR(Routes.POPULAR, "Popular", Icons.Default.Home, "Popular Movies"),
     FAVOURITES(Routes.FAVOURITES, "Favourites", Icons.Default.Star, "My Favourites"),
-    SEARCH(Routes.SEARCH, "Search", Icons.Default.Search, "Search Movies")
+    SEARCH(Routes.SEARCH, "Search", Icons.Default.Search, "Search Movies"),
+    ALBUM(Routes.ALBUM, "Photo Library", Icons.Default.PhotoLibrary, "Upload Photos")
 }
