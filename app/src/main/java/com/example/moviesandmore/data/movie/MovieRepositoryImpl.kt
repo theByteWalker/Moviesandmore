@@ -1,6 +1,9 @@
 package com.example.moviesandmore.data.movie
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.moviesandmore.domain.movie.Movie
 import com.example.moviesandmore.domain.movie.MovieRepository
 import kotlinx.coroutines.flow.Flow
@@ -54,5 +57,17 @@ class MovieRepositoryImpl @Inject constructor(
         val movieApiResponse = response.body()
         val movieDtos = movieApiResponse?.titles ?: emptyList()
         return movieMapper.toDomainList(movieDtos)
+    }
+
+    override fun getPopularMoviesPager(): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                initialLoadSize = 10,
+                enablePlaceholders = false,
+                prefetchDistance = 1
+            ),
+            pagingSourceFactory = { PopularMoviesPagingSource(movieApiService, movieMapper) }
+        ).flow
     }
 }
