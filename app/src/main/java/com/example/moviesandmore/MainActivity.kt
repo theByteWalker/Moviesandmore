@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.moviesandmore.presentation.album.AlbumScreen
+import com.example.moviesandmore.presentation.popularmovies.PopularMoviesScreen
 import com.example.moviesandmore.presentation.favorites.FavoritesScreen
 import com.example.moviesandmore.presentation.movie.MovieSearchScreen
 import com.example.moviesandmore.presentation.moviedetails.MovieDetails
@@ -57,13 +59,18 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(Screen.Album.route) {
                                     launchSingleTop = true
                                 }
+                            },
+                            onPopularClick = {
+                                navController.navigate(Screen.PopularMovies.route) {
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Search.route,
+                        startDestination = Screen.PopularMovies.route,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = innerPadding.calculateBottomPadding())
@@ -85,6 +92,9 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Album.route) {
                             AlbumScreen()
                         }
+                        composable(Screen.PopularMovies.route) {
+                            PopularMoviesScreen()
+                        }
                         composable(Screen.MovieDetail.route, content = { backStackEntry ->
                             val movieId = backStackEntry.arguments?.getString("movieId")
                             MovieDetails(movieId)
@@ -100,13 +110,21 @@ class MainActivity : ComponentActivity() {
 fun SimpleBottomBar(
     onFavoritesClick: () -> Unit,
     onSearchClick: () -> Unit,
-    onAlbumClick: () -> Unit
+    onAlbumClick: () -> Unit,
+    onPopularClick: () -> Unit
 ) {
     BottomAppBar {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            IconButton(onClick = onPopularClick) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "Popular Movies"
+                )
+            }
+
             IconButton(onClick = onSearchClick) {
                 Icon(
                     imageVector = Icons.Filled.Search,
