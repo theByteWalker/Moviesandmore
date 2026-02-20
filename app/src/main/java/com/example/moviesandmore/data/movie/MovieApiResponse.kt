@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class MovieApiResponse(
     @SerializedName("titles")
-    val titles: List<MovieDto>?
+    val titles: List<MovieDto>?,
+    @SerializedName("nextPageToken")
+    val nextPageToken: String? = null
 )
 
 data class MovieDto(
