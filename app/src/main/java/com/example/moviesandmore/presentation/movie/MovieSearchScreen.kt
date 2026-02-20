@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.example.moviesandmore.domain.movie.Movie
+import com.example.moviesandmore.presentation.navigation.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,7 @@ fun MovieSearchScreen(
     Column(
         modifier = modifier
     ) {
-        SearchTopBar()
+        TopBar("Search Movies")
 
         SearchContent(
             modifier = Modifier.weight(1f),
@@ -53,19 +54,6 @@ fun MovieSearchScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchTopBar() {
-    TopAppBar(
-        title = {
-            Text(text = "Search Movies")
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    )
-}
 
 @Composable
 fun SearchContent(
