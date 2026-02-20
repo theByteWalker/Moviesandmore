@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.moviesandmore.presentation.album.AlbumScreen
 import com.example.moviesandmore.presentation.favorites.FavoritesScreen
 import com.example.moviesandmore.presentation.movie.MovieSearchScreen
 import com.example.moviesandmore.presentation.moviedetails.MovieDetails
@@ -50,6 +52,11 @@ class MainActivity : ComponentActivity() {
                                     launchSingleTop = true
                                     popUpTo(Screen.Search.route) { inclusive = true }
                                 }
+                            },
+                            onAlbumClick = {
+                                navController.navigate(Screen.Album.route) {
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }
@@ -75,6 +82,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable(Screen.Album.route) {
+                            AlbumScreen()
+                        }
                         composable(Screen.MovieDetail.route, content = { backStackEntry ->
                             val movieId = backStackEntry.arguments?.getString("movieId")
                             MovieDetails(movieId)
@@ -89,7 +99,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SimpleBottomBar(
     onFavoritesClick: () -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onAlbumClick: () -> Unit
 ) {
     BottomAppBar {
         Row(
@@ -107,6 +118,13 @@ fun SimpleBottomBar(
                 Icon(
                     imageVector = Icons.Outlined.Favorite,
                     contentDescription = "Favorites"
+                )
+            }
+
+            IconButton(onClick = onAlbumClick) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Album"
                 )
             }
         }
