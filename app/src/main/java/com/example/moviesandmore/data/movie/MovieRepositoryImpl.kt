@@ -48,4 +48,11 @@ class MovieRepositoryImpl @Inject constructor(
 
         return movieMapper.toDomainFromDetail(movieDetailDto)
     }
+
+    override suspend fun getAllPopularMovies(): List<Movie> {
+        val response = movieApiService.getAllPopularMovies()
+        val movieApiResponse = response.body()
+        val movieDtos = movieApiResponse?.titles ?: emptyList()
+        return movieMapper.toDomainList(movieDtos)
+    }
 }
