@@ -165,6 +165,27 @@ fun MovieDetails(
                         }
                     }
                     Spacer(modifier = Modifier.height(32.dp))
+
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Sample Audio: mp3Url",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                        ) {
+                            MusicPlayerComposable()
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
         }
