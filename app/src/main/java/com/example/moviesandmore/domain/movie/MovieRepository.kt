@@ -7,4 +7,6 @@ interface MovieRepository {
     suspend fun saveMovie(movie: Movie): MovieEntity
     fun getSavedMovies(): Flow<List<MovieEntity>>
     suspend fun getMovieById(movieId: String): Movie
+
+    suspend fun getAllPopularMovies(): List<Movie>
 }
