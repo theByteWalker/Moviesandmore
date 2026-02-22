@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
-import com.example.moviesandmore.domain.MovieDetailIntent
+import com.example.moviesandmore.presentation.MovieDetailIntent
 import com.example.moviesandmore.presentation.MovieDetailsViewModel
 
 @Composable

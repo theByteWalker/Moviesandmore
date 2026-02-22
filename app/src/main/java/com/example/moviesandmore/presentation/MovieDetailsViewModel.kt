@@ -14,8 +14,6 @@ import javax.inject.Inject
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.example.moviesandmore.app.SendNotification
-import com.example.moviesandmore.domain.MovieDetailIntent
-import com.example.moviesandmore.domain.MovieDetailState
 import com.example.moviesandmore.domain.ToggleFavoriteUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 

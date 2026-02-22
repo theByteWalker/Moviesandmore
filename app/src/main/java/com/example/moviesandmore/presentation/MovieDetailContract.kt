@@ -1,4 +1,4 @@
-package com.example.moviesandmore.domain
+package com.example.moviesandmore.presentation
 
 import com.example.moviesandmore.data.MovieDetailResponse
 
