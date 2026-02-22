@@ -1,15 +1,19 @@
 package com.example.moviesandmore.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.moviesandmore.domain.MovieRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val apiService: MovieApiService,
     private val favMoviesDao: FavoriteDao
 ) : MovieRepository {
-    override suspend fun getMovies(): MovieResponse {
-        return apiService.getTitles()
-    }
+//    override suspend fun getMovies(): MovieResponse {
+//        return apiService.getTitles()
+//    }
     override suspend fun getMovieDetails(titleId: String): MovieDetailResponse {
         return apiService.getMovieDetails(titleId)
     }
@@ -31,5 +35,15 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun removeFavorite(titleId: String) {
         favMoviesDao.deleteFavoriteById(titleId)
+    }
+
+    override fun getMoviesPaging(): Flow<PagingData<MovieTitle>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviePagingSource(apiService) }
+        ).flow
     }
 }

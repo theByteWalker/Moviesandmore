@@ -1,16 +1,20 @@
 package com.example.moviesandmore.domain
 
 import android.util.Log
+import androidx.paging.PagingData
 import com.example.moviesandmore.data.MovieDao
 import com.example.moviesandmore.data.MovieEntity
 import com.example.moviesandmore.data.MovieResponse
+import com.example.moviesandmore.data.MovieTitle
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAllTitlesUseCase @Inject constructor(
     private val repository: MovieRepository,
 ) {
-    suspend operator fun invoke(): MovieResponse {
-        return repository.getMovies()
+    operator fun invoke(): Flow<PagingData<MovieTitle>> {
+        return repository.getMoviesPaging()
+//        return repository.getMovies()
 //        val movieEntities = movies.titles.map { movie ->
 //            MovieEntity(
 //                id = movie.id,

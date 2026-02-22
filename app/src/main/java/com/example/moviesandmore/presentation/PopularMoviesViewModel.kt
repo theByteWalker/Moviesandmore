@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.moviesandmore.data.MovieTitle
 import com.example.moviesandmore.domain.GetAllTitlesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,18 +20,21 @@ class PopularMoviesViewModel @Inject constructor(
     private val _movieTitlesState = mutableStateOf<List<MovieTitle>>(emptyList())
     val uiState: State<List<MovieTitle>> = _movieTitlesState
 
-    init {
-        fetchMovies()
-    }
+//    init {
+//        fetchMovies()
+//    }
 
-    private fun fetchMovies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = getAllTitlesUseCase()
-                _movieTitlesState.value = response.titles
-            } catch (e: Exception) {
-                Log.e("MoviesAndMore", "Error: ${e.message}")
-            }
-        }
-    }
+//    private fun fetchMovies() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                val response = getAllTitlesUseCase()
+//                _movieTitlesState.value = response.titles
+//            } catch (e: Exception) {
+//                Log.e("MoviesAndMore", "Error: ${e.message}")
+//            }
+//        }
+//    }
+
+    val moviePagingFlow = getAllTitlesUseCase()
+        .cachedIn(viewModelScope)
 }
