@@ -24,4 +24,12 @@ class MovieMapper : Mapper<MovieDto, Movie> {
             isFavorite = true
         )
     }
+
+    fun toDomainFromEntity(entity: MovieEntity): Movie {
+        return Movie(
+            titleId = entity.titleId,
+            name = entity.name,
+            imageUrl = entity.posterUrl?.ifBlank { null }
+        )
+    }
 }

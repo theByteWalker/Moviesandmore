@@ -33,14 +33,17 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveMovie(movie: Movie): MovieEntity {
+    override suspend fun saveMovie(movie: Movie): Movie {
         val movieEntityToSave = movieMapper.toEntity(movie)
         val insertedId = movieDao.save(movieEntityToSave)
-        return movieDao.getById(insertedId) ?: throw IllegalStateException("Failed to retrieve saved movie")
+        val savedEntity = movieDao.getById(insertedId) ?: throw IllegalStateException("Failed to retrieve saved movie")
+        return movieMapper.toDomainFromEntity(savedEntity)
     }
 
-    override fun getSavedMovies(): Flow<List<MovieEntity>> {
-        return movieDao.getAll()
+    override fun getSavedMovies(): Flow<List<Movie>> {
+        return movieDao.getAll().map { entityList ->
+            entityList.map { movieMapper.toDomainFromEntity(it) }
+        }
     }
 
     override suspend fun getMovieById(movieId: String): Movie {
