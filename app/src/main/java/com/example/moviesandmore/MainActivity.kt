@@ -93,7 +93,11 @@ class MainActivity : ComponentActivity() {
                             AlbumScreen()
                         }
                         composable(Screen.PopularMovies.route) {
-                            PopularMoviesScreen()
+                            PopularMoviesScreen(
+                                onCardClick = { movieId ->
+                                    navController.navigate(Screen.MovieDetail.createRoute(movieId))
+                                }
+                            )
                         }
                         composable(Screen.MovieDetail.route, content = { backStackEntry ->
                             val movieId = backStackEntry.arguments?.getString("movieId")
