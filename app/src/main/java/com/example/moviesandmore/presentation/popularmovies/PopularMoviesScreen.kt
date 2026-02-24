@@ -1,5 +1,6 @@
 package com.example.moviesandmore.presentation.popularmovies
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,8 @@ import com.example.moviesandmore.core.ui.components.TopBar
 
 @Composable
 fun PopularMoviesScreen(
-    viewModel: PopularMoviesViewModel = hiltViewModel()
+    viewModel: PopularMoviesViewModel = hiltViewModel(),
+    onCardClick: (String) -> Unit
 ) {
     val lazyPagingItems = viewModel.moviesPagingFlow.collectAsLazyPagingItems()
 
@@ -71,7 +73,7 @@ fun PopularMoviesScreen(
                         items(lazyPagingItems.itemCount) { index ->
                             val movie = lazyPagingItems[index]
                             if (movie != null) {
-                                MovieCard(movie = movie)
+                                MovieCard(movie = movie, onCardClick = onCardClick)
                             }
                         }
 
@@ -95,9 +97,9 @@ fun PopularMoviesScreen(
 }
 
 @Composable
-fun MovieCard(movie: Movie) {
+fun MovieCard(movie: Movie, onCardClick: (String) -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = {onCardClick(movie.titleId)}),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
