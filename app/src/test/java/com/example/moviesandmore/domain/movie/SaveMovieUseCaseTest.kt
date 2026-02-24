@@ -1,6 +1,5 @@
 package com.example.moviesandmore.domain.movie
 
-import com.example.moviesandmore.data.movie.MovieEntity
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
@@ -16,12 +15,11 @@ class SaveMovieUseCaseTest {
     @Test
     fun shouldBeAbleToSaveAValidMovie() = runTest {
         val movie = Movie("tt27497448", "Avengers", null)
-        val movieEntiy = MovieEntity(1, "tt27497448", "Avengers", null)
-        coEvery { mockRepository.saveMovie(movie) } returns movieEntiy
+        coEvery { mockRepository.saveMovie(movie) } returns movie
 
         val result = useCase.execute(movie)
 
-        assertEquals(movieEntiy, result)
+        assertEquals(movie, result)
     }
 
     @Test
