@@ -1,5 +1,7 @@
 package com.example.moviesandmore.data.movie
 
+import com.example.moviesandmore.core.utils.Logger
+
 import com.example.moviesandmore.domain.movie.Movie
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,13 +19,15 @@ class MovieRepositoryImplTest {
     private lateinit var movieMapper: MovieMapper
     private lateinit var movieDao: MovieDao
     private lateinit var movieRepository: MovieRepositoryImpl
+    private lateinit var logger: Logger
 
     @Before
     fun setup() {
         movieApiService = mockk()
         movieMapper = MovieMapper()
         movieDao = mockk()
-        movieRepository = MovieRepositoryImpl(movieApiService, movieMapper, movieDao)
+        logger = mockk(relaxed = true)
+        movieRepository = MovieRepositoryImpl(movieApiService, movieMapper, movieDao, logger)
     }
 
     @Test
@@ -72,7 +76,7 @@ class MovieRepositoryImplTest {
     @Test
     fun givenAValidMovie_whenSaveMovie_thenReturnSavedMovieEntity() = runTest {
         val movie = Movie(titleId = "tt27497448", name = "Avengers", imageUrl = "https://example.com/image.jpg")
-        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Avengers", posterUrl = "https://example.com/image.jpg", isFavorite = false)
+        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Avengers", posterUrl = "https://example.com/image.jpg", isFavorite = true)
         val insertedId = 1L
         val savedMovieEntity = MovieEntity(id = 1, titleId = "tt27497448", name = "Avengers", posterUrl = "https://example.com/image.jpg", isFavorite = true)
 
@@ -81,7 +85,7 @@ class MovieRepositoryImplTest {
 
         val result = movieRepository.saveMovie(movie)
 
-        assertEquals(savedMovieEntity, result)
+        assertEquals(Movie("tt27497448", "Avengers", "https://example.com/image.jpg"), result)
         coVerify(exactly = 1) { movieDao.save(movieEntityToSave) }
         coVerify(exactly = 1) { movieDao.getById(insertedId) }
     }
@@ -90,7 +94,7 @@ class MovieRepositoryImplTest {
     fun givenAValidMovieWithNullImageUrl_whenSaveMovie_thenReturnSavedMovieEntityWithEmptyPosterUrl() = runTest {
         val movie = Movie(titleId = "tt27497448", name = "Avengers", imageUrl = null)
         // Change posterUrl to empty string instead of null to match what the repository actually does
-        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Avengers", posterUrl = "", isFavorite = false)
+        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Avengers", posterUrl = "", isFavorite = true)
         val insertedId = 1L
         val savedMovieEntity = MovieEntity(id = 1, titleId = "tt27497448", name = "Avengers", posterUrl = "", isFavorite = true)
 
@@ -99,14 +103,14 @@ class MovieRepositoryImplTest {
 
         val result = movieRepository.saveMovie(movie)
 
-        assertEquals(savedMovieEntity, result)
-        assertEquals("", result.posterUrl)
+        assertEquals(Movie("tt27497448", "Avengers", null), result)
+        assertEquals(null, result.imageUrl)
     }
 
     @Test
     fun givenSaveSucceedsButGetByIdReturnsNull_whenSaveMovie_thenThrowIllegalStateException() {
         val movie = Movie(titleId = "tt27497448", name = "Matrix", imageUrl = null)
-        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Matrix", posterUrl = "", isFavorite = false)
+        val movieEntityToSave = MovieEntity(id = 0, titleId = "tt27497448", name = "Matrix", posterUrl = "", isFavorite = true)
         val insertedId = 3L
 
         coEvery { movieDao.save(movieEntityToSave) } returns insertedId
