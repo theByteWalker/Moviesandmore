@@ -23,12 +23,3 @@ data class PrimaryImage(
     val url: String?
 )
 
-data class MovieDetailDto(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("primaryTitle")
-    val primaryTitle: String,
-    @SerializedName("primaryImage")
-    val primaryImage: PrimaryImage?
-)
-

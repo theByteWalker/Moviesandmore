@@ -1,5 +1,6 @@
 package com.example.moviesandmore.data.movie
 
+import com.example.moviesandmore.core.utils.Logger
 import com.example.moviesandmore.domain.movie.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -13,14 +14,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class MovieModule {
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://api.imdbapi.dev/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
 
     @Provides
     @Singleton
@@ -39,8 +32,9 @@ class MovieModule {
     fun provideMovieRepository(
         movieApiService: MovieApiService,
         movieMapper: MovieMapper,
-        movieDao: MovieDao
+        movieDao: MovieDao,
+        logger: Logger
     ): MovieRepository {
-        return MovieRepositoryImpl(movieApiService, movieMapper, movieDao)
+        return MovieRepositoryImpl(movieApiService, movieMapper, movieDao, logger)
     }
 }

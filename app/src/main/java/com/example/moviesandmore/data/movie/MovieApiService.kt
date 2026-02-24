@@ -10,7 +10,7 @@ interface MovieApiService {
     suspend fun getMoviesByTitle(@Query("query") movieTitle: String): Response<MovieApiResponse>
 
     @GET("titles/{id}")
-    suspend fun getMovieById(@Path("id") movieId: String): Response<MovieDetailDto>
+    suspend fun getMovieById(@Path("id") movieId: String): Response<MovieDto>
 
     @GET("titles")
     suspend fun getAllPopularMovies(

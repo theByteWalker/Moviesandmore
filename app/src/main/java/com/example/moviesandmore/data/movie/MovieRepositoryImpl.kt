@@ -1,9 +1,11 @@
 package com.example.moviesandmore.data.movie
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.moviesandmore.core.network.ApiResult
+import com.example.moviesandmore.core.network.safeApiCall
+import com.example.moviesandmore.core.utils.Logger
 import com.example.moviesandmore.domain.movie.Movie
 import com.example.moviesandmore.domain.movie.MovieRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,16 +15,22 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val movieApiService: MovieApiService,
     private val movieMapper: MovieMapper,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val logger: Logger
 ) : MovieRepository {
     override suspend fun searchMovieByTitle(movieTitle: String): List<Movie> {
         if (movieTitle.isEmpty()) {
             throw IllegalArgumentException("Invalid input")
         }
-        val response = movieApiService.getMoviesByTitle(movieTitle)
-        val movieApiResponse = response.body()
-        val movieDtos = movieApiResponse?.titles ?: emptyList()
-        return movieMapper.toDomainList(movieDtos)
+        val result = safeApiCall { movieApiService.getMoviesByTitle(movieTitle) }
+        return when (result) {
+            is ApiResult.Success -> {
+                val movieDtos = result.data.titles ?: emptyList()
+                movieMapper.toDomainList(movieDtos)
+            }
+            is ApiResult.Error -> throw Exception("API Error: ${result.message}")
+            is ApiResult.Exception -> throw result.throwable
+        }
     }
 
     override suspend fun saveMovie(movie: Movie): MovieEntity {
@@ -36,27 +44,21 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovieById(movieId: String): Movie {
-        Log.i("MovieRepositoryImpl", "getMovieById: ${movieId}")
-        val response = movieApiService.getMovieById(movieId)
-        Log.i("MovieRepositoryImpl", "response: ${response}")
-        Log.i("MovieRepositoryImpl", "response_body: ${response.body()}")
-
-
-        if (!response.isSuccessful) {
-            throw IllegalArgumentException("Movie not found")
+        val result = safeApiCall { movieApiService.getMovieById(movieId) }
+        return when (result) {
+            is ApiResult.Success -> movieMapper.map(result.data)
+            is ApiResult.Error -> throw IllegalArgumentException("Movie not found: ${result.message}")
+            is ApiResult.Exception -> throw result.throwable
         }
-
-        val movieDetailDto = response.body()
-            ?: throw IllegalArgumentException("Movie not found")
-
-        return movieMapper.toDomainFromDetail(movieDetailDto)
     }
 
     override suspend fun getAllPopularMovies(): List<Movie> {
-        val response = movieApiService.getAllPopularMovies()
-        val movieApiResponse = response.body()
-        val movieDtos = movieApiResponse?.titles ?: emptyList()
-        return movieMapper.toDomainList(movieDtos)
+        val result = safeApiCall { movieApiService.getAllPopularMovies() }
+        return when (result) {
+            is ApiResult.Success -> movieMapper.toDomainList(result.data.titles ?: emptyList())
+            is ApiResult.Error -> throw Exception("API Error: ${result.message}")
+            is ApiResult.Exception -> throw result.throwable
+        }
     }
 
     override fun getPopularMoviesPager(): Flow<PagingData<Movie>> {
@@ -67,7 +69,7 @@ class MovieRepositoryImpl @Inject constructor(
                 enablePlaceholders = false,
                 prefetchDistance = 1
             ),
-            pagingSourceFactory = { PopularMoviesPagingSource(movieApiService, movieMapper) }
+            pagingSourceFactory = { PopularMoviesPagingSource(movieApiService, movieMapper, logger) }
         ).flow
     }
 }

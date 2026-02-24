@@ -1,18 +1,19 @@
 package com.example.moviesandmore.data.movie
 
+import com.example.moviesandmore.core.data.Mapper
 import com.example.moviesandmore.domain.movie.Movie
 
-class MovieMapper {
-    fun toDomain(dto: MovieDto): Movie {
+class MovieMapper : Mapper<MovieDto, Movie> {
+    override fun map(input: MovieDto): Movie {
         return Movie(
-            titleId = dto.id,
-            name = dto.primaryTitle,
-            imageUrl = dto.primaryImage?.url
+            titleId = input.id,
+            name = input.primaryTitle,
+            imageUrl = input.primaryImage?.url
         )
     }
 
     fun toDomainList(dtos: List<MovieDto>): List<Movie> {
-        return dtos.map { toDomain(it) }
+        return dtos.map { map(it) }
     }
 
     fun toEntity(movie: Movie): MovieEntity {
@@ -21,14 +22,6 @@ class MovieMapper {
             name = movie.name,
             posterUrl = movie.imageUrl ?: "",
             isFavorite = true
-        )
-    }
-
-    fun toDomainFromDetail(dto: MovieDetailDto): Movie {
-        return Movie(
-            titleId = dto.id,
-            name = dto.primaryTitle,
-            imageUrl = dto.primaryImage?.url
         )
     }
 }
