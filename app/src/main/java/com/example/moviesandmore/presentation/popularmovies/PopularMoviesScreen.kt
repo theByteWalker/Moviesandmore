@@ -29,7 +29,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import com.example.moviesandmore.domain.movie.Movie
-import com.example.moviesandmore.presentation.common.TopBar
+import com.example.moviesandmore.core.ui.components.TopBar
 
 @Composable
 fun PopularMoviesScreen(

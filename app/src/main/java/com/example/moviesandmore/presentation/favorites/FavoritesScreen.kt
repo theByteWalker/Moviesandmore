@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.example.moviesandmore.data.movie.MovieEntity
-import com.example.moviesandmore.presentation.common.TopBar
+import com.example.moviesandmore.core.ui.components.TopBar
 
 @Composable
 fun FavoritesScreen(

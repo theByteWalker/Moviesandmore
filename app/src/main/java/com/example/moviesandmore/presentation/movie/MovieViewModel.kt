@@ -3,6 +3,8 @@ package com.example.moviesandmore.presentation.movie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesandmore.app.FavouritesNotificationService
+import com.example.moviesandmore.core.presentation.UiState
+import com.example.moviesandmore.core.utils.Logger
 import com.example.moviesandmore.domain.movie.Movie
 import com.example.moviesandmore.domain.movie.SaveMovieUseCase
 import com.example.moviesandmore.domain.movie.SearchMovieUseCase
@@ -17,13 +19,14 @@ import javax.inject.Inject
 class MovieViewModel @Inject constructor(
     private val searchMovieUseCase: SearchMovieUseCase,
     private val saveMovieUseCase: SaveMovieUseCase,
-    private val favouritesNotificationService: FavouritesNotificationService
+    private val favouritesNotificationService: FavouritesNotificationService,
+    private val logger: Logger
 ) : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val _uiState = MutableStateFlow<MovieSearchState>(MovieSearchState.Idle)
-    val uiState: StateFlow<MovieSearchState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState<List<Movie>>>(UiState.Idle)
+    val uiState: StateFlow<UiState<List<Movie>>> = _uiState.asStateFlow()
 
     init {
         observeSearchQuery()
@@ -37,7 +40,7 @@ class MovieViewModel @Inject constructor(
                 .distinctUntilChanged() // Only emit if query actually changed
                 .collect { query ->
                     if (query.isEmpty()) {
-                        _uiState.value = MovieSearchState.Idle
+                        _uiState.value = UiState.Idle
                     } else {
                         searchMovieByTitle(query)
                     }
@@ -55,32 +58,24 @@ class MovieViewModel @Inject constructor(
                 saveMovieUseCase.execute(movie)
                 favouritesNotificationService.showMovieAddedNotification(movie.name)
             } catch (e: Exception) {
-                android.util.Log.e("MovieViewModel", "Error saving movie", e)
+                logger.e("MovieViewModel", "Error saving movie", e)
             }
         }
     }
 
     private suspend fun searchMovieByTitle(movieTitle: String) {
-        _uiState.value = MovieSearchState.Loading
+        _uiState.value = UiState.Loading
         try {
             val movies = searchMovieUseCase.execute(movieTitle)
             _uiState.value = if (movies.isEmpty()) {
-                MovieSearchState.Empty
+                UiState.Empty
             } else {
-                MovieSearchState.Success(movies)
+                UiState.Success(movies)
             }
         } catch (e: Exception) {
-            _uiState.value = MovieSearchState.Error(
+            _uiState.value = UiState.Error(
                 e.message ?: "An unknown error occurred"
             )
         }
     }
-}
-
-sealed class MovieSearchState {
-    data object Idle : MovieSearchState()
-    data object Loading : MovieSearchState()
-    data object Empty : MovieSearchState()
-    data class Success(val movies: List<Movie>) : MovieSearchState()
-    data class Error(val message: String) : MovieSearchState()
 }

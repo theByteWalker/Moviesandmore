@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
+import com.example.moviesandmore.core.presentation.UiState
 import com.example.moviesandmore.domain.movie.Movie
-import com.example.moviesandmore.presentation.common.TopBar
+import com.example.moviesandmore.core.ui.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +61,7 @@ fun SearchContent(
     modifier: Modifier = Modifier,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    uiState: MovieSearchState,
+    uiState: UiState<List<Movie>>,
     onFavoriteClick: (Movie) -> Unit,
     onCardClick: (movie: Movie) -> Unit
 ) {
@@ -77,15 +78,15 @@ fun SearchContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         when (uiState) {
-            is MovieSearchState.Idle -> EmptyState()
-            is MovieSearchState.Loading -> LoadingState()
-            is MovieSearchState.Empty -> EmptyResultsState()
-            is MovieSearchState.Success -> MovieList(
-                movies = uiState.movies,
+            is UiState.Idle -> EmptyState()
+            is UiState.Loading -> LoadingState()
+            is UiState.Empty -> EmptyResultsState()
+            is UiState.Success -> MovieList(
+                movies = uiState.data,
                 onFavoriteClick = onFavoriteClick,
                 onCardClick = onCardClick
             )
-            is MovieSearchState.Error -> ErrorState(message = uiState.message)
+            is UiState.Error -> ErrorState(message = uiState.message)
         }
     }
 }
