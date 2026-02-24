@@ -1,4 +1,4 @@
-package com.example.moviesandmore.presentation.common
+package com.example.moviesandmore.core.ui.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
