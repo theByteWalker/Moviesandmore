@@ -1,10 +1,9 @@
 package com.example.moviesandmore.domain.movie
 
-import com.example.moviesandmore.data.movie.MovieEntity
 import javax.inject.Inject
 
 class SaveMovieUseCase @Inject constructor(private val movieRepository: MovieRepository) {
-    suspend fun execute(movie: Movie): MovieEntity {
+    suspend fun execute(movie: Movie): Movie {
         if (movie.name.isEmpty()) {
             throw IllegalArgumentException("Invalid Movie, Cannot Save")
         }
