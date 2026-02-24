@@ -38,8 +38,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
-import com.example.moviesandmore.data.movie.MovieEntity
 import com.example.moviesandmore.core.ui.components.TopBar
+import com.example.moviesandmore.domain.movie.Movie
 
 @Composable
 fun FavoritesScreen(
@@ -80,11 +80,11 @@ fun FavoritesScreen(
 
 @Composable
 fun FavouriteMovieItem(
-    movie: MovieEntity,
-    onFavoriteClick: (MovieEntity) -> Unit = {},
+    movie: Movie,
+    onFavoriteClick: (Movie) -> Unit = {},
     onCardClick: () -> Unit
 ) {
-    var isFavorite by remember(movie.isFavorite) { mutableStateOf(movie.isFavorite) }
+    var isFavorite by remember { mutableStateOf(true) }
 
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = { onCardClick() }),
@@ -102,7 +102,7 @@ fun FavouriteMovieItem(
                     .clip(MaterialTheme.shapes.medium)
             ) {
                 AsyncImage(
-                    model = movie.posterUrl,
+                    model = movie.imageUrl,
                     contentDescription = "${movie.name} poster",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
