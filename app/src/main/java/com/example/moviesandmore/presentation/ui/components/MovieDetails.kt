@@ -152,6 +152,25 @@ fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewMod
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
+                    text = "Soundtrack",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                AudioPlayer(
+                    url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(112.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
                     text = "Trailer",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
