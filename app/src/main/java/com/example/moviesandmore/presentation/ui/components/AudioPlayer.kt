@@ -14,8 +14,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import androidx.media3.ui.PlayerView
-import com.example.moviesandmore.playback.PlaybackService
-import com.google.common.util.concurrent.ListenableFuture
+import com.example.moviesandmore.app.PlaybackService
 import com.google.common.util.concurrent.MoreExecutors
 
 @OptIn(UnstableApi::class)

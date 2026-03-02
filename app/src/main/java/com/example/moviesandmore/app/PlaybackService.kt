@@ -1,6 +1,5 @@
-package com.example.moviesandmore.playback
+package com.example.moviesandmore.app
 
-import android.content.Intent
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
