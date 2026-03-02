@@ -44,6 +44,7 @@ import com.example.moviesandmore.presentation.ui.components.FavouritesMovies
 import com.example.moviesandmore.presentation.ui.components.Login
 import com.example.moviesandmore.presentation.ui.components.MovieDetails
 import com.example.moviesandmore.presentation.ui.components.PopularMovies
+import com.example.moviesandmore.presentation.ui.components.RickAndMortyScreen
 import com.example.moviesandmore.presentation.ui.components.SearchMovies
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -133,7 +134,9 @@ class MainActivity : ComponentActivity() {
                                 })
                             }
                             composable(route = Routes.FAVOURITES) {
-                                FavouritesMovies()
+                                FavouritesMovies(innerPadding, {
+                                    titleId -> navController.navigate(Routes.navigateToMovieDetailsById(titleId))
+                                })
                             }
                             composable(route = Routes.SEARCH) {
                                 SearchMovies()
@@ -150,6 +153,9 @@ class MainActivity : ComponentActivity() {
                                     innerPadding,
                                     viewModel = viewModel()
                                 )
+                            }
+                            composable(route = Routes.RICK_AND_MORTY) {
+                                RickAndMortyScreen(innerPadding)
                             }
                         }
                 }

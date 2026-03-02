@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
@@ -15,4 +16,7 @@ interface FavoriteDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE id = :titleId)")
     suspend fun isFavorite(titleId: String): Boolean
+
+    @Query("SELECT * FROM favorites ORDER BY createdAt DESC")
+    fun getAllFavorites(): Flow<List<FavoriteMovieEntity>>
 }

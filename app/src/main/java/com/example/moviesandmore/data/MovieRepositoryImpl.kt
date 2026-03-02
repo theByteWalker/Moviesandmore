@@ -46,4 +46,8 @@ class MovieRepositoryImpl @Inject constructor(
             pagingSourceFactory = { MoviePagingSource(apiService) }
         ).flow
     }
+
+    override fun getFavorites(): Flow<List<FavoriteMovieEntity>> {
+        return favMoviesDao.getAllFavorites()
+    }
 }
