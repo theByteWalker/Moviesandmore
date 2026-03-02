@@ -4,7 +4,14 @@ plugins {
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.apollo)
     id("com.google.gms.google-services")
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.example.moviesandmore")
+    }
 }
 
 android {
@@ -106,4 +113,6 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)
+
+    implementation(libs.apollo.runtime)
 }

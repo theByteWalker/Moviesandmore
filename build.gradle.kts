@@ -5,5 +5,6 @@ plugins {
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.kotlinAndroidKsp) apply false
     alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.apollo) apply false
     id("com.google.gms.google-services") version "4.4.4" apply false
 }

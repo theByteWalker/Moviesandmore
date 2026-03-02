@@ -12,6 +12,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.network.okHttpClient
+import com.example.moviesandmore.data.CharacterRepositoryImpl
+import com.example.moviesandmore.domain.CharacterRepository
 import javax.inject.Singleton
 
 @Module
@@ -50,11 +54,24 @@ object NetworkModule {
         return retrofit.create(MovieApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://rickandmortyapi.com/graphql")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
+
     @Module
     @InstallIn(SingletonComponent::class)
     abstract class RepositoryModule {
         @Binds
         @Singleton
         abstract fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
+
+        @Binds
+        @Singleton
+        abstract fun bindCharacterRepository(impl: CharacterRepositoryImpl): CharacterRepository
     }
 }

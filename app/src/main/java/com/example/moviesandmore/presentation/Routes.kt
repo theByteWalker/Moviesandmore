@@ -11,4 +11,5 @@ object Routes {
     }
     const val LOGIN = "login"
     const val ALBUM = "album"
+    const val RICK_AND_MORTY = "rick_and_morty"
 }
