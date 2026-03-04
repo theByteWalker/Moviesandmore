@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.apollo)
 
     id("com.google.gms.google-services")
 }
@@ -55,6 +56,16 @@ android {
     }
 }
 
+apollo {
+    service("service") {
+        packageName.set("com.example.moviesandmore.data.anime.graphql")
+        introspection {
+            endpointUrl.set("https://graphql.anilist.co")
+            schemaFile.set(file("src/main/graphql/com/example/moviesandmore/data/anime/graphql/schema.graphqls"))
+        }
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -95,6 +106,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.apollo.runtime)
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
