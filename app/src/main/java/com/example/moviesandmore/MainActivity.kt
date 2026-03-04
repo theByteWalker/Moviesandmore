@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.moviesandmore.presentation.album.AlbumScreen
+import com.example.moviesandmore.presentation.anime.PopularAnimeScreen
 import com.example.moviesandmore.presentation.popularmovies.PopularMoviesScreen
 import com.example.moviesandmore.presentation.favorites.FavoritesScreen
 import com.example.moviesandmore.presentation.movie.MovieSearchScreen
@@ -64,6 +66,11 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(Screen.PopularMovies.route) {
                                     launchSingleTop = true
                                 }
+                            },
+                            onAnimeClick = {
+                                navController.navigate(Screen.PopularAnime.route) {
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }
@@ -99,6 +106,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        composable(Screen.PopularAnime.route) {
+                            PopularAnimeScreen()
+                        }
                         composable(Screen.MovieDetail.route, content = { backStackEntry ->
                             val movieId = backStackEntry.arguments?.getString("movieId")
                             MovieDetails(movieId)
@@ -115,7 +125,8 @@ fun SimpleBottomBar(
     onFavoritesClick: () -> Unit,
     onSearchClick: () -> Unit,
     onAlbumClick: () -> Unit,
-    onPopularClick: () -> Unit
+    onPopularClick: () -> Unit,
+    onAnimeClick: () -> Unit
 ) {
     BottomAppBar {
         Row(
@@ -147,6 +158,13 @@ fun SimpleBottomBar(
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Album"
+                )
+            }
+
+            IconButton(onClick = onAnimeClick) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = "Anime"
                 )
             }
         }
