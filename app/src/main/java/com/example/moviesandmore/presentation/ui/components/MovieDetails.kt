@@ -164,7 +164,7 @@ fun MovieDetails(titleId: String, viewModel: MovieDetailsViewModel = hiltViewMod
                     url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(112.dp)
+                        .aspectRatio(16f / 9f)
                         .clip(RoundedCornerShape(12.dp))
                 )
 

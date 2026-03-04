@@ -54,7 +54,7 @@ fun VideoPlayer(url: String, modifier: Modifier = Modifier, onFullScreenToggle: 
             })
             val savedPosition = sharedPrefs.getLong(videoKey, 0L)
             seekTo(savedPosition)
-            playWhenReady = true
+            playWhenReady = false
             prepare()
         }
     }

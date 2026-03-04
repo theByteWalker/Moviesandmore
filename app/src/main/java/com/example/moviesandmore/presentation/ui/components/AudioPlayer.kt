@@ -55,7 +55,6 @@ fun AudioPlayer(url: String, modifier: Modifier = Modifier) {
             factory = { ctx ->
                 PlayerView(ctx).apply {
                     useController = true
-                    // Show only the controller for audio
                     controllerHideOnTouch = false
                 }
             },
