@@ -178,7 +178,7 @@ fun MovieDetails(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(220.dp),
+                                .wrapContentHeight(),
                             shape = MaterialTheme.shapes.medium,
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
                         ) {
